@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="watzthis.css" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>WatzThis?</title>
     <script>
       var light = new Array();
       var t;
       var color = 0;
       var flipping = 0;
-      var speed;
+      var speed = 1000;
       light[0] = "black";
       light[1] = "white";
       light[2] = "red";
@@ -20,17 +21,20 @@
       light[4] = "green";
       light[5] = "orange";
       function flip(whichway) {
+        document.getElementById("mytext").innerHTML = light[whichway];
         document.body.style.backgroundColor = light[whichway];
         stopFlip();
       }
       function autoFlip() {
+        document.getElementById("mytext").innerHTML = light[color];
         document.body.style.backgroundColor = light[color];
-        if (color < light.length - 1) {
-          color++;
+        if (color > 0) {
+          color--;
         } else {
-          color = 0;
+          color = light.length - 1;
         }
-        t = setTimeout("autoFlip()", speed);
+
+        t = setTimeout("autoFlip(speed)", speed);
       }
       function doAutoFlip(changespeed) {
         if (!flipping) {
@@ -43,11 +47,18 @@
         clearTimeout(t);
         flipping = 0;
       }
+
+      function writeCurrent() {
+        document.getElementById("mytext").innerHTML = "white";
+      }
     </script>
+
     <style>
       body {
         font-family: arial, helvetica;
         text-align: center;
+      }
+      #container {
       }
       #directions,
       #flashlight,
@@ -64,22 +75,22 @@
       }
     </style>
   </head>
-  <body>
+  <body onload="writeCurrent()">
+    <h1>WatzThis?</h1>
+    <div id="directions">
+      <ol>
+        <li>
+          Use the top row of buttons to turn the flashlight on or off, or to
+          make the light red.
+        </li>
+        <li>
+          Use the 2nd row of buttons to turn on and off your automatic flashing
+          color light dance party.
+        </li>
+      </ol>
+    </div>
     <div id="container">
       <div id="flashlight">
-        <h1>WatzThis?</h1>
-        <div id="directions">
-          <ol>
-            <li>
-              Use the top row of buttons to turn the flashlight on or off, or to
-              make the light red.
-            </li>
-            <li>
-              Use the 2nd row of buttons to turn on and off your automatic
-              flashing color light dance party.
-            </li>
-          </ol>
-        </div>
         <input
           type="button"
           id="OFF"
@@ -118,6 +129,7 @@
           onclick="stopFlip();"
         />
       </div>
+      <div id="mytext">Current Color</div>
     </div>
   </body>
 </html>
