@@ -1,12 +1,11 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="MobileOptimized" content="320" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <title>WatzThis?</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>Map Me!</title>
+    <link rel="stylesheet" type="text/css" href="watzthis.css" />
+
+    <!-- the following script tag brings in the Google Maps API functions -->
     <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
     <script>
       //initialize variables for color buttons and auto mode
@@ -14,7 +13,7 @@
       var t;
       var color = 0;
       var flipping = 0;
-      var speed = 1000;
+      var speed;
       light[0] = "black";
       light[1] = "white";
       light[2] = "red";
@@ -23,21 +22,20 @@
       light[5] = "orange";
 
       function flip(whichway) {
-        document.getElementById("mytext").innerHTML = light[whichway];
+        //changes the screen color when called
         document.body.style.backgroundColor = light[whichway];
         stopFlip();
       }
 
       function autoFlip() {
-        document.getElementById("mytext").innerHTML = light[color];
+        //changes the screen color automatically at an interval set by the global speed variable
         document.body.style.backgroundColor = light[color];
-        if (color > 0) {
-          color--;
+        if (color < light.length - 1) {
+          color++;
         } else {
-          color = light.length - 1;
+          color = 0;
         }
-
-        t = setTimeout("autoFlip(speed)", speed);
+        t = setTimeout("autoFlip()", speed);
       }
       function doAutoFlip(changespeed) {
         //start the auto-flipping if it's not already going.
@@ -53,15 +51,6 @@
         flipping = 0;
       }
 
-      function writeCurrent() {
-        document.getElementById("mytext").innerHTML = "white";
-      }
-      if (light[color] != "black") {
-        document.getElementById("mytext").innerHTML = light[color];
-      } else {
-        document.getElementById("mytext").innerHTML =
-          light[color].fontcolor("white");
-      }
       function $(id) {
         //gets an element by the id passed to it.
         return document.getElementById(id);
@@ -103,40 +92,12 @@
         }
       }
     </script>
-
-    <style>
-      body {
-        font-family: arial, helvetica;
-        text-align: center;
-      }
-      #container {
-      }
-      #directions,
-      #flashlight,
-      #danceparty {
-        margin: 4px;
-      }
-      ol {
-        display: inline-block;
-        margin: 0 auto;
-        text-align: left;
-      }
-      .bigButton {
-        font-size: 18px;
-      }
-    </style>
   </head>
-  <body onload="writeCurrent()">
+  <body style="margin: 0px; padding: 0px">
     <div id="main">
       <h1>WatzThis?</h1>
 
       <div id="container">
-        <object
-          width="100%"
-          height="100px"
-          data="animated_ghost.svg"
-          type="image/svg+xml"
-        ></object>
         <div id="directions">
           <ol>
             <li>
@@ -189,7 +150,6 @@
             onclick="stopFlip();"
           />
         </div>
-        <div id="mytext">Current Color</div>
         <div id="geolocation">
           <input
             type="button"
